@@ -1,0 +1,31 @@
+﻿@model IEnumerable<Game>
+
+@{
+    ViewData["Title"] = "Games List";
+}
+
+<h2>Games List</h2>
+
+<div class="row mt-5">
+    @foreach (var game in Model)
+    {
+        <div class="col-lg-4 col-md-6">
+            <div class="card border-primary mb-3" style="max-width: 20rem;">
+                <div class="card-body" style="background-image: url('@($"{FileSetting.ImagePath.Trim()}/{game.cover}")'); background-size: cover; background-position: center; height:400px;">
+                    <div class="h-100">
+                        <span class="badge bg-dark">@game.Category.Name</span>
+                    </div>
+                </div>
+                <div class="card-footer text-muted d-flex justify-content-between align-content-center">
+                    <h5>@game.name</h5>
+                    <div>
+                        @foreach (var gamedevise in game.Devises)
+                        {
+                            <i class="@gamedevise.Device.Icon me-1 fs-3"> </i>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>

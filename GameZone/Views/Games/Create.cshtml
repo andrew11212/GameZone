@@ -1,0 +1,65 @@
+﻿@model CreateGameViewModel
+
+@{
+    ViewData["Title"] = "Add Game";
+}
+<h5>
+    <i class="bi bi-patch-plus-fill"></i>
+    Add a New Game
+</h5>
+<form asp-controller="Games" asp-action="Create" method="post" enctype="multipart/form-data">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <div>
+                    <label asp-for="name" class="form-label mt-2">Name</label>
+                    <input type="text" class="form-control mt-1 placeholder-color" asp-for="name" placeholder="Game Name">
+                    <span asp-validation-for="name" class="text-danger"></span>
+                </div>
+                <div>
+                    <label asp-for="CategoryID" class="form-label mt-2">Category</label>
+                    <select class="form-select" asp-for="CategoryID" asp-items="Model.categories"
+                        data-placeholder="select a category" data-minimum-results-for-search="Infinity">
+                        <option value="">Select Category</option>
+                    </select>
+                    <span asp-validation-for="CategoryID" class="text-danger"></span>
+                </div>
+                <div>
+                    <label asp-for="SelectedDevices" class="form-label mt-2">Devices</label>
+                    <select class="form-select" asp-for="SelectedDevices" asp-items="Model.Devices"
+                        data-placeholder="select devices" data-minimum-results-for-search="Infinity">
+                        <option>Select Devices</option>
+                    </select>
+                    <span asp-validation-for="SelectedDevices" class="text-danger"></span>
+                </div>
+                <div>
+                    <label asp-for="description" class="form-label mt-2">Description</label>
+                    <textarea asp-for="description" class="form-control mt-1 placeholder-color" placeholder="Description"></textarea>
+                    <span asp-validation-for="description" class="text-danger"></span>
+                </div>
+                <div>
+                    <label asp-for="cover" class="form-label mt-2">Cover</label>
+                    <input type="file" class="form-control mt-1 placeholder-color" asp-for="cover"
+                           data-rule-extension="@FileSetting.Extensions.Replace(".",string.Empty)"
+                           data-msg-extension="Not allowed extension"
+                           data-rule-filesize="@FileSetting.AllowedFileSizeInBytes"
+                           data-msg-filesize="Maximum allowed size is @FileSetting.AllowedFileSizeInMB MB">
+
+                    <small class="form-text text-muted d-block mt-1">Only .jpg, .jpeg, .png files are allowed with max size 1Mb</small>
+                    <span asp-validation-for="cover" class="text-danger"></span>
+                </div>
+                <button type="submit" class="btn btn-outline-primary mt-2">Save</button>
+            </div>
+        </div>
+        <div class="col-md-6 d-flex align-items-center justify-content-center overflow-hidden">
+            <img id="cover-preview" class="cover-preview d-none" alt="Cover" style="max-width: 100%; height: auto;" />
+        </div>
+    </div>
+</form>
+
+@section Scripts
+{
+    <partial name="_ValidationScriptsPartial" />
+    <script src="~/js/filesize-validator.js" asp-append-version="true"></script>
+    <script src="~/js/gameform.js" asp-append-version="true"></script>
+}
