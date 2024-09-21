@@ -2,6 +2,7 @@ using Azure.Messaging;
 using GameZone.Data;
 using GameZone.Services;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 
 namespace GameZone
 {
@@ -10,15 +11,19 @@ namespace GameZone
 		public static void Main(string[] args)
 		{
 			var builder = WebApplication.CreateBuilder(args);
+		
 
 			var connectionString = builder.Configuration.GetConnectionString("DefualtConnection")
 				?? throw new InvalidOperationException(message: "no Contection string was found");
 			// Add services to the container.
 			builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connectionString));
+
+			builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<ApplicationDbContext>();
 			builder.Services.AddControllersWithViews();
 			builder.Services.AddScoped<ICategoriesServices,CategoriesServices>();
 			builder.Services.AddScoped<IDevicesServices,DevicesServices>();
 			builder.Services.AddScoped<IGamesServices,GamesServices>();
+			builder.Services.AddRazorPages();//add razor page to use identity
 
 			var app = builder.Build();
 
@@ -35,11 +40,13 @@ namespace GameZone
 
 			app.UseRouting();
 
+			app.UseAuthentication();
 			app.UseAuthorization();
-
+			app.MapRazorPages();//add middle ware to razor page for identity
 			app.MapControllerRoute(
 				name: "default",
 				pattern: "{controller=Home}/{action=Index}/{id?}");
+
 
 			app.Run();
 		}

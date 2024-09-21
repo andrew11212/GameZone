@@ -1,8 +1,9 @@
 ﻿using GameZone.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace GameZone.Data
 {
-	public class ApplicationDbContext :DbContext
+	public class ApplicationDbContext :IdentityDbContext
 	{
         public ApplicationDbContext(DbContextOptions <ApplicationDbContext> options):base(options) 
         {
