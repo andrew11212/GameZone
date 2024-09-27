@@ -24,7 +24,9 @@ namespace GameZone.Controllers
 
 		public IActionResult Index()
 		{
-			return View();
+
+			var gamelist = gamesServices.GetAll();
+			return View(gamelist);
 		}
 
 		[HttpGet]
@@ -50,8 +52,27 @@ namespace GameZone.Controllers
 
 				return View(viewModel);
 			}
-			 await gamesServices.Create(viewModel);
+			await gamesServices.Create(viewModel);
 
+			return RedirectToAction(nameof(Index));
+		}
+		[HttpGet]
+		public async Task<IActionResult> Delete(int? id)
+		{
+			var game = await _context.Games.Include(g => g.Category).FirstOrDefaultAsync(m => m.id == id);
+			if (game == null || id == 0)
+			{
+				return NotFound();
+			}
+			return View(game);
+		}
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+
+		public async Task<IActionResult> Delete(Game game)
+		{
+			_context.Games.Remove(game);
+			await _context.SaveChangesAsync();
 			return RedirectToAction(nameof(Index));
 		}
 	}

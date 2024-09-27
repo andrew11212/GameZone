@@ -3,7 +3,8 @@ using GameZone.Data;
 using GameZone.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
-
+using GameZone.Utility;
+using Microsoft.AspNetCore.Identity.UI.Services;
 namespace GameZone
 {
 	public class Program
@@ -14,16 +15,17 @@ namespace GameZone
 		
 
 			var connectionString = builder.Configuration.GetConnectionString("DefualtConnection")
-				?? throw new InvalidOperationException(message: "no Contection string was found");
+				?? throw new InvalidOperationException(message: "no Connection string was found");
 			// Add services to the container.
 			builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connectionString));
 
-			builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<ApplicationDbContext>();
+			builder.Services.AddIdentity<IdentityUser, IdentityRole>()/*(options => options.SignIn.RequireConfirmedAccount = true)*/.AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();// add bec i removed DefualtIdentity
 			builder.Services.AddControllersWithViews();
 			builder.Services.AddScoped<ICategoriesServices,CategoriesServices>();
 			builder.Services.AddScoped<IDevicesServices,DevicesServices>();
 			builder.Services.AddScoped<IGamesServices,GamesServices>();
 			builder.Services.AddRazorPages();//add razor page to use identity
+			builder.Services.AddScoped<IEmailSender, EmailSender>();
 
 			var app = builder.Build();
 

@@ -16,7 +16,7 @@ namespace GameZone.Data
 		public DbSet<Device> Devices { get; set; }
 
 		public DbSet<GameDevise> gameDevises { get; set; }
-
+		public DbSet<Application_user> applicationUsers { get; set; }
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
 			modelBuilder.Entity<Category>().HasData(new Category[]

@@ -1,7 +1,55 @@
-﻿@{
-    ViewData["Title"] = "Games";
+﻿
+
+
+@model IEnumerable<GameZone.Models.Game>
+
+@{
+    ViewData["Title"] = "Game List";
 }
-<a class="btn btn-outline-primary btn-lg"asp-action="Create">
+
+<h1>Game List</h1>
+
+<a class="btn btn-outline-primary btn-lg" asp-action="Create">
     <i class="bi bi-patch-plus-fill"></i>
     AddGame
-</a> 
+</a>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Cover</th>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Category</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.Any())
+        {
+            foreach (var game in Model)
+            {
+                <tr>
+                    <td>
+                        <img src="@Url.Content($"~/{FileSetting.ImagePath}/{game.cover}")" alt="@game.name" style="width: 100px; height: auto;" />
+                        <p> @{Url.Content($"~/{FileSetting.ImagePath}/{game.cover}");}</p> <!-- Debugging output -->
+                    </td>
+                    <td>@game.name</td>
+                    <td>@game.description</td>
+                    <td>@game.Category?.Name </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@game.id" class="btn btn-warning">Edit</a>
+                        <a asp-action="Delete" asp-route-id="@game.id" class="btn btn-danger">Delete</a>
+                    </td>
+                </tr>
+
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="5" class="text-center">No games available.</td>
+            </tr>
+        }
+    </tbody>
+</table>

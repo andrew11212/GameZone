@@ -26,17 +26,10 @@ public class GamesServices : IGamesServices
 
 	public async Task Create(CreateGameViewModel model)
 	{
-		var coverName = $"{Guid.NewGuid()}{Path.GetExtension(model.cover.FileName)}";
-		var path = Path.Combine(imagesPath, coverName);
+		var FileName = $"{Guid.NewGuid()}{Path.GetExtension(model.cover.FileName)}";
+		var Filepath = Path.Combine(imagesPath, FileName);
 
-		// Ensure the directory exists
-		var directory = Path.GetDirectoryName(path);
-		if (!Directory.Exists(directory))
-		{
-			Directory.CreateDirectory(directory);
-		}
-
-		using (var stream = new FileStream(path, FileMode.Create))
+		using (var stream = new FileStream(Filepath, FileMode.Create))
 		{
 			await model.cover.CopyToAsync(stream);
 		}
@@ -44,7 +37,7 @@ public class GamesServices : IGamesServices
 		Game game = new Game
 		{
 			name = model.name,
-			cover = coverName,
+			cover = FileName,
 			CategoryID = model.CategoryID,
 			description = model.description,
 			Devises = model.SelectedDevices.Select(d => new GameDevise { DeviceId = d }).ToList(),
