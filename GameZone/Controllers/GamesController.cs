@@ -4,6 +4,7 @@ using GameZone.Services;
 using GameZone.ViewModel;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 
 namespace GameZone.Controllers
 {
@@ -30,7 +31,6 @@ namespace GameZone.Controllers
 		}
 
 		[HttpGet]
-
 		public IActionResult Create()
 		{
 			CreateGameViewModel viewModel = new()
@@ -54,6 +54,51 @@ namespace GameZone.Controllers
 			}
 			await gamesServices.Create(viewModel);
 
+			return RedirectToAction(nameof(Index));
+		}
+		[HttpGet]
+		public async Task<IActionResult> Details(int? id)
+		{
+			if (id == null)
+				return BadRequest();
+				
+			var game = await gamesServices.FindByIdAsync(id.Value);
+			
+			if (game == null)
+				return NotFound();
+				
+			return View(game);
+		}
+		[HttpGet]
+		public async Task<IActionResult> Edit(int? id)
+		{
+			if (id == null)
+				return BadRequest();
+				
+			var model = await gamesServices.GetForEditAsync(id.Value);
+			
+			if (model == null)
+				return NotFound();
+				
+			// Populate dropdown lists
+			model.Categories = categoriesServices.GetSelectList();
+			model.Devices = devicesServices.GetDevices();
+			
+			return View(model);
+		}
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public async Task<IActionResult> Edit(EditGameViewModel model)
+		{
+			if (!ModelState.IsValid)
+			{
+				model.Categories = categoriesServices.GetSelectList();
+				model.Devices = devicesServices.GetDevices();
+				return View(model);
+			}
+			
+			await gamesServices.UpdateAsync(model);
+			
 			return RedirectToAction(nameof(Index));
 		}
 		[HttpGet]

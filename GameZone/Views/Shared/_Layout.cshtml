@@ -15,31 +15,59 @@
     <link rel="stylesheet" href="~/GameZone.styles.css" asp-append-version="true" />
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-lg bg-dark mb-3" data-bs-theme="dark">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-controller="Home" asp-action="Index">GameZone</a>
-                <a class="navbar-brand" asp-controller="Games" asp-action="Index">Games</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
+    <header class="sticky-top">
+        <nav class="navbar navbar-expand-lg navbar-dark shadow-sm" style="background: linear-gradient(90deg, #3a0ca3 0%, #4361ee 100%);">
+            <div class="container">
+                <a class="navbar-brand d-flex align-items-center" asp-controller="Home" asp-action="Index">
+                    <i class="bi bi-controller me-2 fs-3"></i>
+                    <span class="fw-bold">GameZone</span>
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" 
+                    aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-            </div>
-            <div>
-                <partial name="_LoginPartial" />
+                <div class="collapse navbar-collapse" id="navbarContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Home" asp-action="Index">
+                                <i class="bi bi-house-fill me-1"></i> Home
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Games" asp-action="Index">
+                                <i class="bi bi-grid-3x3-gap-fill me-1"></i> Games
+                            </a>
+                        </li>
+                    </ul>
+                    <partial name="_LoginPartial" />
+                </div>
             </div>
         </nav>
     </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
+    
+    <main role="main" class="container py-4 mb-8">
+        @RenderBody()
+    </main>
 
-    <footer class="border-bottom-0 footer text-muted">
+    <footer class="footer py-4" style="background-color: #f8f9fa; border-top: 1px solid #e9ecef;">
         <div class="container">
-            &copy; 2024 - GameZone - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            <div class="row">
+                <div class="col-md-6 mb-3 mb-md-0">
+                    <h5 class="fw-bold"><i class="bi bi-controller me-2"></i> GameZone</h5>
+                    <p class="text-muted">Your ultimate gaming destination</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <p class="mb-0">&copy; @DateTime.Now.Year - GameZone</p>
+                    <div>
+                        <a asp-area="" asp-controller="Home" asp-action="Privacy" class="text-decoration-none">Privacy</a> | 
+                        <a href="#" class="text-decoration-none">Terms</a> | 
+                        <a href="#" class="text-decoration-none">Contact</a>
+                    </div>
+                </div>
+            </div>
         </div>
     </footer>
+    
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/lib/select2/js/select2.min.js"></script>

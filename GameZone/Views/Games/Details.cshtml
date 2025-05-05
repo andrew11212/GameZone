@@ -1,0 +1,61 @@
+@model Game
+
+@{
+    ViewData["Title"] = Model.name;
+}
+
+<div class="container py-5">
+    <div class="row">
+        <div class="col-md-12 mb-4">
+            <div class="d-flex justify-content-between align-items-center">
+                <h1 class="text-primary">
+                    <i class="bi bi-info-circle-fill"></i> Game Details
+                </h1>
+                <div>
+                    <a asp-action="Edit" asp-route-id="@Model.id" class="btn btn-warning me-2">
+                        <i class="bi bi-pencil-fill me-1"></i> Edit
+                    </a>
+                    <a asp-action="Index" class="btn btn-outline-secondary">
+                        <i class="bi bi-arrow-left me-1"></i> Back to List
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-5 mb-4">
+            <div class="card shadow border-0 h-100">
+                <div class="position-relative">
+                    <img src="@Url.Content($"~/{FileSetting.ImagePath}/{Model.cover}")" class="card-img-top" alt="@Model.name" style="height: 350px; object-fit: contain;" />
+                    <div class="position-absolute top-0 end-0 p-3">
+                        <span class="badge bg-primary fs-6">@Model.Category.Name</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-7">
+            <div class="card shadow border-0 h-100">
+                <div class="card-body">
+                    <h2 class="card-title mb-4 fw-bold">@Model.name</h2>
+                    
+                    <h5 class="mb-3 text-primary"><i class="bi bi-grid-3x3-gap-fill me-2"></i>Category</h5>
+                    <p class="card-text mb-4">@Model.Category.Name</p>
+                    
+                    <h5 class="mb-3 text-primary"><i class="bi bi-laptop me-2"></i>Supported Devices</h5>
+                    <div class="mb-4">
+                        @foreach (var gameDevice in Model.Devises)
+                        {
+                            <span class="badge bg-light text-dark p-2 me-2 mb-2 fs-6">
+                                <i class="@gameDevice.Device.Icon me-1"></i> @gameDevice.Device.Name
+                            </span>
+                        }
+                    </div>
+                    
+                    <h5 class="mb-3 text-primary"><i class="bi bi-file-text me-2"></i>Description</h5>
+                    <p class="card-text">@Model.description</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> 
